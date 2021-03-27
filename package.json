@@ -1,0 +1,22 @@
+{
+  "name": "rocket-telemetry",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sekilas13/rocket-telemetry.git"
+  },
+  "author": "Ezra Khairan Permana",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sekilas13/rocket-telemetry/issues"
+  },
+  "homepage": "https://github.com/sekilas13/rocket-telemetry#readme",
+  "dependencies": {
+    "puppeteer": "^8.0.0"
+  }
+}
