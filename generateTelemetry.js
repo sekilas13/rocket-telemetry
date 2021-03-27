@@ -12,7 +12,7 @@ const puppeteer = require("puppeteer");
   console.log("> FORM SUBMIT");
   await page.$eval('input[name="t1"]', (el) => (el.value = "101"));
   await page.$eval('form[name="form1"]', (form) => form.submit());
-  await page.waitForNavigation({ waitUntil: "networkidle0" });
+  await page.waitForNavigation({ waitUntil: "networkidle0", timeout: 0 });
   console.log("> IDLE");
 
   page.on("error", () => {
@@ -20,7 +20,7 @@ const puppeteer = require("puppeteer");
     page.reload();
   });
 
-  const data = await page.evaluate(() => {
+  const telemetries = await page.evaluate(() => {
     const rows = document.querySelectorAll("#AutoNumber1 tr");
 
     const arr = Array.from(rows, (row) => {
@@ -37,5 +37,10 @@ const puppeteer = require("puppeteer");
   await browser.close();
   console.log("> CLOSED");
 
-  console.log(data);
+  const indexs = telemetries.shift();
+  const mainData = telemetries.map((telemetry) =>
+    indexs.map((key, idx) => ({ [key]: telemetry[idx] }))
+  );
+
+  console.log(mainData);
 })();
