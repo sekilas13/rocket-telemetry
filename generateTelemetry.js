@@ -1,4 +1,13 @@
 const puppeteer = require("puppeteer");
+const { promisify } = require("util");
+const path = require("path");
+const fs = require("fs");
+
+const RESULT_DIR = path.join(__dirname, "result");
+
+const writeFileSync = promisify(fs.writeFileSync);
+
+if (!fs.existsSync(RESULT_DIR)) fs.mkdirSync(RESULT_DIR);
 
 (async () => {
   const browser = await puppeteer.launch({ headless: false });
@@ -38,9 +47,16 @@ const puppeteer = require("puppeteer");
   console.log("> CLOSED");
 
   const indexs = telemetries.shift();
-  const mainData = telemetries.map((telemetry) =>
-    indexs.map((key, idx) => ({ [key]: telemetry[idx] }))
-  );
+  const mainData = telemetries.map((telemetry) => {
+    const output = {};
+    indexs.forEach((key, idx) => {
+      output[key] = telemetry[idx];
+    });
+    return output;
+  });
 
-  console.log(mainData);
+  await writeFileSync(
+    path.join(RESULT_DIR, "telemetry.json"),
+    JSON.stringify(mainData, null, 2)
+  );
 })();
